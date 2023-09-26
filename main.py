@@ -7,8 +7,10 @@ from fastapi import FastAPI, HTTPException, Depends, Response
 from models import user as USER
 from dotenv import load_dotenv
 from jwt_.bearer import verify_password_,create_access_token,hash_password,is_logged_in
-
+from tasks.router import router
 app = FastAPI()
+
+app.include_router(router)
 
 load_dotenv('.env')
 
