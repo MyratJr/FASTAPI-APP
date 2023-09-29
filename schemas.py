@@ -13,3 +13,7 @@ class User_Schema(User_Schema2):
 
     class Config:
         orm_mode = True
+
+class login_(BaseModel):
+    username:str
+    password:str

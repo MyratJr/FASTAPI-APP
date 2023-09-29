@@ -1,13 +1,13 @@
 import os
 from datetime import timedelta
-from fastapi.security import  OAuth2PasswordRequestForm
 from fastapi_sqlalchemy import DBSessionMiddleware, db
-from schemas import User_Schema, User_Schema2
+from schemas import User_Schema, User_Schema2, login_
 from fastapi import FastAPI, HTTPException, Depends, Response
 from models import user as USER
 from dotenv import load_dotenv
 from jwt_.bearer import verify_password_,create_access_token,hash_password,is_logged_in
 from tasks.router import router
+
 app = FastAPI()
 
 app.include_router(router)
@@ -26,9 +26,9 @@ def signup(user:User_Schema):
         db.session.add(new_user)
         db.session.commit()
         return user
-
+    
 @app.post("/token")
-def login(response: Response,form_data:OAuth2PasswordRequestForm=Depends(),is_logged:bool=Depends(is_logged_in)):
+def login(response: Response,form_data:login_,is_logged:bool=Depends(is_logged_in)):
     if is_logged:
         raise HTTPException(status_code=403,detail="You are already logged in. Please log out before logging in again.")
     user =db.session.query(USER).filter_by(username=form_data.username).first()
