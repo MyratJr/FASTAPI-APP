@@ -33,11 +33,13 @@ def get_all_users():
     return All_Users
 
 @app.delete('/delete/{id}')
-def deleteuser(id:int):
-    update_user =db.session.query(USER).filter_by(id=id).first()
-    db.session.delete(update_user)
-    db.session.commit()
-    return "success"
+def deleteuser(id:int,is_admin_superuser1:bool=Depends(is_admin_superuser)):
+    if is_admin_superuser1:
+        update_user =db.session.query(USER).filter_by(id=id).first()
+        db.session.delete(update_user)
+        db.session.commit()
+        return Response(status_code=204)
+    raise HTTPException(status_code=403, detail="Only available for superusers")
 
 @app.post("/Update_User/{id}",response_model=users)
 def update_user(id:int,will_update_user_scema:sub_users,is_admin_superuser1:bool=Depends(is_admin_superuser)):
