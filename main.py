@@ -67,7 +67,6 @@ def login(form_data:login_,is_logged:bool=Depends(is_logged_in)):
 
 @app.get('/al')
 def get_current_user(is_logged:bool=Depends(is_logged_in)):
-    print(is_logged)
     if is_logged is False:
         raise HTTPException(status_code=401,detail="Any user have not logged in.")
     return {'User':is_logged}
