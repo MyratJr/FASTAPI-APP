@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON, Boolean
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 

@@ -1,13 +1,12 @@
+from fastapi_sqlalchemy import db
 import jwt
 from datetime import datetime,timedelta
-from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from config import*
-from fastapi import Request
+from models import user as USER
+from fastapi import Request,HTTPException,Depends
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 def hash_password(password):
     return password_context.hash(password)
@@ -24,15 +23,31 @@ def create_access_token(data:dict,expires_delta:timedelta):
     expire=datetime.utcnow()+expires_delta
     to_encode.update({'exp':expire})
     encoded_jwt=jwt.encode(to_encode, JWT_SECRET_KEY, ALGORITHM)
-    return encoded_jwt
+    return "Bearer "+encoded_jwt
 
 def get_username_from_token(token):
-    decoded_token = jwt.decode(token,JWT_SECRET_KEY, ALGORITHM)
-    username = decoded_token["sub"]
-    return username
+    try:
+        decoded_token = jwt.decode(token,JWT_SECRET_KEY, ALGORITHM)
+        username = decoded_token["sub"]
+        return username
+    except jwt.exceptions.DecodeError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    except jwt.exceptions.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
 
 def is_logged_in(request:Request):
-    if request.cookies.get('token'):
-        return(get_username_from_token(request.cookies.get('token')))
+    authorization = request.headers.get("Authorization")
+    if authorization:
+        if authorization.startswith("Bearer "):
+            token = authorization.split("Bearer ")[1]
+            return(get_username_from_token(token))
+        else:
+            raise HTTPException(status_code=401,detail="Unknown token")
     else:
         return False
+    
+def is_admin_superuser(result:bool=Depends(is_logged_in)):
+    if result is False:
+        raise HTTPException(status_code=401,detail="Any user have not logged in.")
+    update_user =db.session.query(USER).filter_by(username=result).first()
+    return update_user.is_superuser is True
