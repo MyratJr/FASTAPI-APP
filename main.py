@@ -8,6 +8,12 @@ from dotenv import load_dotenv
 from jwt_.bearer import verify_password_,create_access_token,hash_password,is_logged_in
 from jwt_.superuser import router as superuser_router
 from jwt_.errexchand import exchand
+import redis
+from random import randint
+from tasks.router import get_dashboard_report
+from fastapi.responses import Response
+
+redis_connection = redis.Redis()
 
 app = FastAPI()
 
@@ -17,17 +23,25 @@ load_dotenv('.env')
 
 app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
 
-@app.post("/signup",response_model=User_Schema2)
+def cache(key, data):
+    redis_connection.set(key, data, ex=60)
+# ,response_model=User_Schema2
+@app.post("/signup")
 def signup(user:User_Schema,is_logged:bool=Depends(is_logged_in)):
     if is_logged is False:
         existing_user =db.session.query(USER).filter_by(email=user.email).first()
         if existing_user:
             exchand(409,"Email already registered")
         else:
-            new_user=USER(email=user.email, username=user.username, hashed_password=hash_password(user.password))
-            db.session.add(new_user)
-            db.session.commit()
-            return user
+            cache('detail',user.email)
+            get_dashboard_report(user.username,user.email,randint(1000,9999))
+            return {"detail":"We sent OTP to your gmail account, verify your account"}
+            
+            # print((redis_connection.get('detail')).decode("utf-8"))
+            # new_user=USER(email=user.email, username=user.username, hashed_password=hash_password(user.password))
+            # db.session.add(new_user)
+            # db.session.commit()
+            # return user
     else:
         exchand(403,"You are already logged in.")
 
