@@ -30,6 +30,14 @@ class sub_users(BaseModel):
         orm_mode = True
         arbitrary_types_allowed=True
 
+class change_user_info(BaseModel):
+    email: str
+    username: str
+    password:str
+    is_active: bool
+    is_superuser: bool
+    is_verified: bool
+
 class users(sub_users):
     id: int
     registered_at: datetime
@@ -37,3 +45,4 @@ class users(sub_users):
     class Config:
         orm_mode = True
         arbitrary_types_allowed=True
+

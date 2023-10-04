@@ -5,6 +5,7 @@ from passlib.context import CryptContext
 from config import*
 from models import user as USER
 from fastapi import Request,HTTPException,Depends
+from .errexchand import exchand
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -31,9 +32,9 @@ def get_username_from_token(token):
         username = decoded_token["sub"]
         return username
     except jwt.exceptions.DecodeError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        return exchand(401,"Invalid token")
     except jwt.exceptions.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
+        return exchand(401,"Token has expired")
 
 def is_logged_in(request:Request):
     authorization = request.headers.get("Authorization")
@@ -42,12 +43,12 @@ def is_logged_in(request:Request):
             token = authorization.split("Bearer ")[1]
             return(get_username_from_token(token))
         else:
-            raise HTTPException(status_code=401,detail="Unknown token")
+            return exchand(401,"Unknown token")
     else:
         return False
     
 def is_admin_superuser(result:bool=Depends(is_logged_in)):
     if result is False:
-        raise HTTPException(status_code=401,detail="Any user have not logged in.")
+        return exchand(401,"You are not logged in.")
     update_user =db.session.query(USER).filter_by(username=result).first()
     return update_user.is_superuser is True
