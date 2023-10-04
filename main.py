@@ -6,13 +6,11 @@ from fastapi import FastAPI, Depends
 from models import user as USER
 from dotenv import load_dotenv
 from jwt_.bearer import verify_password_,create_access_token,hash_password,is_logged_in
-from tasks.router import router as email_router
 from jwt_.superuser import router as superuser_router
 from jwt_.errexchand import exchand
 
 app = FastAPI()
 
-app.include_router(email_router)
 app.include_router(superuser_router)
 
 load_dotenv('.env')
@@ -32,8 +30,6 @@ def signup(user:User_Schema,is_logged:bool=Depends(is_logged_in)):
             return user
     else:
         exchand(403,"You are already logged in.")
-    
-
 
 @app.post("/token")
 def login(form_data:login_,is_logged:bool=Depends(is_logged_in)):
