@@ -5,7 +5,7 @@ from models import user as USER
 from fastapi_sqlalchemy import db
 from .errexchand import exchand
 
-router=APIRouter()
+router=APIRouter(prefix='/admin')
 
 @router.get("/users",response_model=list[users])
 def get_all_users(is_admin_superuser1:bool=Depends(is_admin_superuser)):
