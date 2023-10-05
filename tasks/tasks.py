@@ -11,12 +11,12 @@ celery=Celery('tasks',broker='redis://localhost:6379')
 
 def get_email_template_dashboard(username,email1,OTP):
     email=EmailMessage()
-    email['Subject']='Report from BEST TRADING Platform'
+    email['Subject']='Account verification code'
     email['From']=SMTP_USER
     email['To']=email1
     email.set_content(
         '<div>'
-        f'<h1>Hello {username}, this is your verification code: <h2 style="font-size:50px">{OTP}</h2></h1>'
+        f'<h1>Hello {username}, this is your verification code. Go to the program and verify your account: <h2 style="font-size:50px">{OTP}</h2></h1>'
         '</div>',
         subtype='html'
     )

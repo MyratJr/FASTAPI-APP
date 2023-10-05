@@ -46,3 +46,5 @@ class users(sub_users):
         orm_mode = True
         arbitrary_types_allowed=True
 
+class otp_schema(BaseModel):
+    OTP:int

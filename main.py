@@ -1,8 +1,8 @@
 import os
 from datetime import timedelta
 from fastapi_sqlalchemy import DBSessionMiddleware, db
-from schemas import User_Schema, User_Schema2, login_
-from fastapi import FastAPI, Depends
+from schemas import User_Schema, User_Schema2, login_,otp_schema
+from fastapi import FastAPI, Depends, HTTPException
 from models import user as USER
 from dotenv import load_dotenv
 from jwt_.bearer import verify_password_,create_access_token,hash_password,is_logged_in
@@ -24,8 +24,8 @@ load_dotenv('.env')
 app.add_middleware(DBSessionMiddleware, db_url=os.environ['DATABASE_URL'])
 
 def cache(key, data):
-    redis_connection.set(key, data, ex=60)
-# ,response_model=User_Schema2
+    redis_connection.set(key, data, ex=300)
+
 @app.post("/signup")
 def signup(user:User_Schema,is_logged:bool=Depends(is_logged_in)):
     if is_logged is False:
@@ -33,17 +33,31 @@ def signup(user:User_Schema,is_logged:bool=Depends(is_logged_in)):
         if existing_user:
             exchand(409,"Email already registered")
         else:
+            OTP=randint(1000,9999)
             cache('detail',user.email)
-            get_dashboard_report(user.username,user.email,randint(1000,9999))
-            return {"detail":"We sent OTP to your gmail account, verify your account"}
-            
-            # print((redis_connection.get('detail')).decode("utf-8"))
-            # new_user=USER(email=user.email, username=user.username, hashed_password=hash_password(user.password))
-            # db.session.add(new_user)
-            # db.session.commit()
-            # return user
+            cache('otp',OTP)
+            cache('password',user.password)
+            cache('username',user.username)
+            get_dashboard_report(user.username,user.email,OTP)
+            return {"detail":"We sent OTP to your gmail account, verify your account"} 
     else:
         exchand(403,"You are already logged in.")
+        
+@app.post("/verify_account")
+def verify_account(OTP:otp_schema):
+    try:
+        cache_otp=(redis_connection.get('otp')).decode("utf-8")
+    except AttributeError:
+        raise HTTPException(status_code=403,detail="OTP code time expred")
+    if OTP.OTP==int(cache_otp):
+        email=(redis_connection.get('detail')).decode("utf-8")
+        password=(redis_connection.get('password')).decode("utf-8")
+        username=(redis_connection.get('username')).decode("utf-8")
+        new_user=USER(email=email, username=username, hashed_password=hash_password(password))
+        db.session.add(new_user)
+        db.session.commit()
+        return {"email":email,"username":username}
+    exchand(401,"Incorrect OTP code")
 
 @app.post("/token")
 def login(form_data:login_,is_logged:bool=Depends(is_logged_in)):
