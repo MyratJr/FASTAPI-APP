@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 import datetime
-from sqlalchemy import Boolean
 
 class User_Schema2(BaseModel):
     email:str

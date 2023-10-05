@@ -1,6 +1,6 @@
 from fastapi import APIRouter,HTTPException,Response,Depends
 from schemas import users,change_user_info
-from .bearer import is_admin_superuser,hash_password
+from .bearer import is_admin_superuser,hash_password,is_logged_in
 from models import user as USER
 from fastapi_sqlalchemy import db
 from .errexchand import exchand
@@ -40,3 +40,9 @@ def update_user(id:int,will_update_user_scema:change_user_info,is_admin_superuse
         db.session.commit()
         return update_user
     exchand(403,"Only available for superusers")
+
+@router.post("/logout")
+def logout(is_logged:bool=Depends(is_logged_in)):
+    if is_logged is False:
+        exchand(401,"You are not logged in.")
+    exchand(200,"You have been logged out successfully.")
