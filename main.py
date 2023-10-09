@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 from jwt_.superuser import router as superuser_router
 from jwt_.users import router as users_router
 import redis
+from fastapi_swagger2 import FastAPISwagger2
 
 app = FastAPI()
-
+FastAPISwagger2(app)
 def redis_connection():
     return redis.Redis()
 

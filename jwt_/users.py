@@ -3,27 +3,23 @@ from schemas import User_Schema,login_,otp_schema
 from fastapi import Depends, HTTPException,APIRouter
 from models import user as USER
 from .bearer import verify_password_,create_access_token,hash_password,is_logged_in
-from .errexchand import exchand, cache
+from .errexchand import exchand, cache,ceckmail
 from random import randint
 from tasks.router import get_dashboard_report
 from fastapi_sqlalchemy import db
 import main
-from email_validator import validate_email
 
 router=APIRouter(prefix='/user')
 
 @router.post("/signup")
 def signup(user:User_Schema,is_logged:bool=Depends(is_logged_in)):
-    try:
-        validate_email(user.email)
-    except ValueError:
-        raise HTTPException(status_code=400,detail="Invalid email address")
+    ceckmail(user)
     if is_logged is False:
         existing_user =db.session.query(USER).filter_by(email=user.email).first()
         if existing_user:
             exchand(409,"Email already registered")
         else:
-            OTP=randint(1000,9999)
+            OTP=randint(100000,999999)
             cache('detail',user.email)
             cache('otp',OTP)
             cache('password',user.password)
@@ -38,8 +34,9 @@ def verify_account(OTP:otp_schema):
     try:
         cache_otp=(main.redis_connection().get('otp')).decode("utf-8")
     except AttributeError:
-        raise HTTPException(status_code=403,detail="OTP code time expred")
+        raise HTTPException(status_code=403,detail="No OTP code or OTP code time expired")
     if OTP.OTP==int(cache_otp):
+        main.redis_connection().delete('otp')
         email=(main.redis_connection().get('detail')).decode("utf-8")
         password=(main.redis_connection().get('password')).decode("utf-8")
         username=(main.redis_connection().get('username')).decode("utf-8")
