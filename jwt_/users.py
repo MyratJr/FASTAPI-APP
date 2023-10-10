@@ -1,7 +1,7 @@
 from datetime import timedelta
-from schemas import User_Schema,login_,otp_schema
+from schemas import User_Schema,login_,otp_schema, salam
 from fastapi import Depends, HTTPException,APIRouter
-from models import user as USER
+from models import user as USER,User, Role
 from .bearer import verify_password_,create_access_token,hash_password,is_logged_in
 from .errexchand import exchand, cache,ceckmail
 from random import randint
@@ -45,6 +45,15 @@ def verify_account(OTP:otp_schema):
         db.session.commit()
         return {"email":email,"username":username}
     exchand(401,"Incorrect OTP code")
+
+@router.post("/salam",response_model=salam)
+def salam(sagbol:salam):
+    sms=db.session.query(User).filter_by(id=1).first()
+    q1=Role(id=sagbol.id,name=sagbol.name,users=sms.id)
+    db.session.add(q1)
+    db.session.commit()
+    return sagbol
+
 
 @router.post("/token")
 def login(form_data:login_,is_logged:bool=Depends(is_logged_in)):

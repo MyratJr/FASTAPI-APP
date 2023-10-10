@@ -69,26 +69,15 @@ class a9(Base):
     vocational_training=Column(ForeignKey("employe_vocational_training.id"), nullable=False)
     professional_education=Column(ForeignKey("employe_professional_education.id"), nullable=False)
 
-blogs_tags = Table(
-    "blogs_tags",
-    Base.metadata,
-    Column('blog_id', ForeignKey('blogs.id'), primary_key=True),
-    Column('tag_id', ForeignKey('tags.id'), primary_key=True)
-)
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255))
+    email = Column(String(255), unique=True)
+    roles = relationship("Role", back_populates="users")
 
-
-class Blog(Base):
-    __tablename__ = "blogs"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    body = Column(String)
-    tags = relationship("Tag", secondary=blogs_tags, back_populates="blogs")
-
-
-class Tag(Base):
-    __tablename__ = "tags"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    blogs = relationship("Blog", secondary=blogs_tags, back_populates="tags")
+class Role(Base):
+    __tablename__ = "roles"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), unique=True)
+    users = relationship("User", back_populates="roles")
