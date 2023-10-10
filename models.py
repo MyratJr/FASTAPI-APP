@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey,Table
+from sqlalchemy.orm import relationship
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.associationproxy import association_proxy
 
 Base = declarative_base()
 
@@ -61,27 +60,35 @@ class a9(Base):
     __tablename__='employe'
     id = Column(Integer, primary_key=True)
     name_surname=Column(String,nullable=False)
+    nation=Column(ForeignKey("employe_nation.id"), nullable=False)
+    age=Column(ForeignKey("employe_age_between.id"), nullable=False)
+    sex=Column(ForeignKey("employe_sex.id"), nullable=False)
+    new_degree=Column(ForeignKey("employe_new_degree.id"), nullable=False)
+    end_knowledge=Column(ForeignKey("employe_end_knowledge.id"), nullable=False)
+    knowledge=Column(ForeignKey("employe_knowledge.id"), nullable=False)
+    vocational_training=Column(ForeignKey("employe_vocational_training.id"), nullable=False)
+    professional_education=Column(ForeignKey("employe_professional_education.id"), nullable=False)
 
-class BookAuthor(Base):
-    __tablename__ = 'book_authors'
-    book_id = Column(ForeignKey('books.id'), primary_key=True)
-    author_id = Column(ForeignKey('authors.id'), primary_key=True)
-    blurb = Column(String, nullable=False)
-    book = relationship("Book", back_populates="authors")
-    author = relationship("Author", back_populates="books")
+blogs_tags = Table(
+    "blogs_tags",
+    Base.metadata,
+    Column('blog_id', ForeignKey('blogs.id'), primary_key=True),
+    Column('tag_id', ForeignKey('tags.id'), primary_key=True)
+)
 
-    # proxies
-    author_name = association_proxy(target_collection='author', attr='name')
-    book_title = association_proxy(target_collection='book', attr='title')
 
-class Book(Base):
-    __tablename__ = 'books'
-    id = Column(Integer, primary_key=True)
-    title = Column(String, nullable=False)
-    authors = relationship("BookAuthor", back_populates="book")
+class Blog(Base):
+    __tablename__ = "blogs"
 
-class Author(Base):
-    __tablename__ = 'authors'
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    books = relationship("BookAuthor", back_populates="author")
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, index=True)
+    body = Column(String)
+    tags = relationship("Tag", secondary=blogs_tags, back_populates="blogs")
+
+
+class Tag(Base):
+    __tablename__ = "tags"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    blogs = relationship("Blog", secondary=blogs_tags, back_populates="tags")
