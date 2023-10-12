@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 import datetime
+from typing import List
 
 class User_Schema2(BaseModel):
     email:str
@@ -47,3 +48,15 @@ class users(sub_users):
 
 class otp_schema(BaseModel):
     OTP:int
+
+class input_employe(BaseModel):
+    id:int
+    name_surname:str
+    nation:int
+    age:int
+    sex:int
+    new_degree:int
+    knowledge:int
+    end_knowledge:List[int]
+    vocational_training:List[int]
+    professional_education:List[int]

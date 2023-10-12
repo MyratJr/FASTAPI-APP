@@ -1,9 +1,10 @@
 from datetime import timedelta
-from schemas import User_Schema,login_,otp_schema
+from schemas import User_Schema,login_,otp_schema,input_employe
 from fastapi import Depends, HTTPException,APIRouter
 from models import user as USER
+from models import *
 from .bearer import verify_password_,create_access_token,hash_password,is_logged_in
-from .errexchand import exchand, cache,ceckmail
+from .errexchand import exchand, cache,ceckmail,for_list,return_
 from random import randint
 from tasks.router import get_dashboard_report
 from fastapi_sqlalchemy import db
@@ -66,3 +67,35 @@ def logout(is_logged:bool=Depends(is_logged_in)):
     if is_logged is False:
         exchand(401,"You are not logged in.")
     exchand(200,"You have been logged out successfully.")
+
+@router.post("/add_employe")
+def add_employe(employe_schema:input_employe):
+    new_employe=a9(id=employe_schema.id,
+                    name_surname=employe_schema.name_surname,
+                    nation=employe_schema.nation,
+                    age=employe_schema.age,
+                    sex=employe_schema.sex,
+                    new_degree=employe_schema.new_degree,
+                    knowledge=employe_schema.knowledge)
+    db.session.add(new_employe)
+    db.session.commit()
+
+    a=[];b=[];c=[]
+
+    for_list(employe_schema,'end_knowledge',a1,a)
+    for_list(employe_schema,'vocational_training',a5,b)
+    for_list(employe_schema,'professional_education',a6,c)
+
+    
+
+    return {"id":employe_schema.id,
+            "name_surname":employe_schema.name_surname,
+            "natio":return_(a4,employe_schema.nation).nation,
+            "age":return_(a2,employe_schema.age).age_between,
+            "sex":return_(a7,employe_schema.sex).sex,
+            "new_degree":return_(a8,employe_schema.new_degree).degree,
+            "knowledge":return_(a3,employe_schema.knowledge).knowledge,
+            "end_knowledge":a,
+            "vocational_training":b,
+            "professional_education":c
+            }
