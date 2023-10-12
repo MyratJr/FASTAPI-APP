@@ -82,11 +82,11 @@ def add_employe(employe_schema:input_employe):
 
     a=[];b=[];c=[]
 
-    # for_list(employe_schema,'end_knowledge',a1,a)
-    # for_list(employe_schema,'vocational_training',a5,b)
-    # for_list(employe_schema,'professional_education',a6,c)
+    for_list(employe_schema,'end_knowledge',a1,a)
+    for_list(employe_schema,'vocational_training',a5,b)
+    for_list(employe_schema,'professional_education',a6,c)
 
-
+    
 
     return {"id":employe_schema.id,
             "name_surname":employe_schema.name_surname,
