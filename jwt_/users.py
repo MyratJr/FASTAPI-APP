@@ -86,8 +86,6 @@ def add_employe(employe_schema:input_employe):
     for_list(employe_schema,'vocational_training',a5,b)
     for_list(employe_schema,'professional_education',a6,c)
 
-    
-
     return {"id":employe_schema.id,
             "name_surname":employe_schema.name_surname,
             "natio":return_(a4,employe_schema.nation).nation,
