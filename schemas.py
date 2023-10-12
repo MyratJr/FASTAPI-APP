@@ -47,7 +47,3 @@ class users(sub_users):
 
 class otp_schema(BaseModel):
     OTP:int
-
-class salam(BaseModel):
-    id:int
-    name:str

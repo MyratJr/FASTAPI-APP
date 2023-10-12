@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey,Table
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey,ARRAY
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -20,6 +20,7 @@ class a1(Base):
     __tablename__='employe_end_knowledge'
     id = Column(Integer, primary_key=True)
     knowledge_part=Column(String,nullable=False)
+    employes=Column(ARRAY(String),nullable=True)
 
 class a2(Base):
     __tablename__='employe_age_between'
@@ -40,11 +41,13 @@ class a5(Base):
     __tablename__='employe_vocational_training'
     id = Column(Integer, primary_key=True)
     vocational_training=Column(String,nullable=False)
+    employes=Column(ARRAY(String),nullable=True)
 
 class a6(Base):
     __tablename__='employe_professional_education'
     id = Column(Integer, primary_key=True)
     professional_education=Column(String,nullable=False)
+    employes=Column(ARRAY(String),nullable=True)
 
 class a7(Base):
     __tablename__='employe_sex'
@@ -64,20 +67,4 @@ class a9(Base):
     age=Column(ForeignKey("employe_age_between.id"), nullable=False)
     sex=Column(ForeignKey("employe_sex.id"), nullable=False)
     new_degree=Column(ForeignKey("employe_new_degree.id"), nullable=False)
-    end_knowledge=Column(ForeignKey("employe_end_knowledge.id"), nullable=False)
     knowledge=Column(ForeignKey("employe_knowledge.id"), nullable=False)
-    vocational_training=Column(ForeignKey("employe_vocational_training.id"), nullable=False)
-    professional_education=Column(ForeignKey("employe_professional_education.id"), nullable=False)
-
-class User(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(255))
-    email = Column(String(255), unique=True)
-    roles = relationship("Role", back_populates="users")
-
-class Role(Base):
-    __tablename__ = "roles"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(255), unique=True)
-    users = relationship("User", back_populates="roles")
