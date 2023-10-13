@@ -97,3 +97,9 @@ def add_employe(employe_schema:input_employe):
             "vocational_training":b,
             "professional_education":c
             }
+
+
+
+
+
+            
