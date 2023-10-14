@@ -58,5 +58,5 @@ class input_employe(BaseModel):
     new_degree:int
     knowledge:int
     end_knowledge:List[int]
-    vocational_training:List[int]
-    professional_education:List[int]
+    # vocational_training:List[int]
+    # professional_education:List[int]

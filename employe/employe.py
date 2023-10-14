@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Request
 from jwt_.errexchand import exchand,return_,ugrat,ber,select_need_column,get_all_data
 from models import *
 from schemas import input_employe
@@ -51,8 +51,7 @@ def add_employe_get():
     o8 = select_need_column(db.session.query(a6).all())
     return [o1,o2,o3,o4,o5,o6,o7,o8]
 
-
 @shared_router.get("/get_employes")
 def get_employes():
     all_employe=db.session.query(a9).all()
-    return [all_employe,'salam']
+    return all_employe
