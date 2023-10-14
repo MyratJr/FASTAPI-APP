@@ -70,6 +70,9 @@ def logout(is_logged:bool=Depends(is_logged_in)):
 
 @router.post("/add_employe")
 def add_employe(employe_schema:input_employe):
+    check_user=db.session.query(a9).filter_by(id=employe_schema.id).first()
+    if check_user is not None:
+        exchand(400,"Employe already exists")
     new_employe=a9(id=employe_schema.id,
                     name_surname=employe_schema.name_surname,
                     nation=employe_schema.nation,
