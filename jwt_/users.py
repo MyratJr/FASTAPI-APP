@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException,APIRouter
 from models import user as USER
 from models import *
 from .bearer import verify_password_,create_access_token,hash_password,is_logged_in
-from .errexchand import exchand, cache,ceckmail,for_list,return_,categories_for_response,ugrat,ber
+from .errexchand import exchand, cache,ceckmail,return_,ugrat,ber,select_need_column,get_all_data
 from random import randint
 from tasks.router import get_dashboard_report
 from fastapi_sqlalchemy import db
@@ -100,11 +100,12 @@ def add_employe(employe_schema:input_employe):
 
 @router.get("/add_employe")
 def add_employe_get():
-    o1 = db.session.query(a4).all()
-    o2 = db.session.query(a2).all()
-    o3 = db.session.query(a7).all()
-    o4 = db.session.query(a8).all()
-    o5 = db.session.query(a3).all()
-    o6 = db.session.query(a1).all()
-    o7 = db.session.query(a5).all()
-    o7 = db.session.query(a6).all()
+    o1 = get_all_data(a4)
+    o2 = get_all_data(a2)
+    o3 = get_all_data(a7)
+    o4 = get_all_data(a8)
+    o5 = get_all_data(a3)
+    o6 = select_need_column(db.session.query(a1).all())
+    o7 = select_need_column(db.session.query(a5).all())
+    o8 = select_need_column(db.session.query(a6).all())
+    return [o1,o2,o3,o4,o5,o6,o7,o8]

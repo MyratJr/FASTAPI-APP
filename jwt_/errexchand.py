@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from fastapi_sqlalchemy import db
 from fastapi import HTTPException
 import main
@@ -53,3 +54,10 @@ def ugrat(a,b,c,a1,b1,c1,a2,b2,c2):
     categories_for_response(a,b,c)
     categories_for_response(a1,b1,c1)
     categories_for_response(a2,b2,c2)
+
+def select_need_column(table_name):
+    cleaned_data = [{key: value for key, value in row.__dict__.items() if key != 'employes'} for row in table_name]
+    return cleaned_data
+
+def get_all_data(table):
+    return db.session.query(table).all()
