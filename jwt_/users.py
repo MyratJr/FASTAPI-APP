@@ -112,3 +112,14 @@ def add_employe_get():
     o7 = select_need_column(db.session.query(a5).all())
     o8 = select_need_column(db.session.query(a6).all())
     return [o1,o2,o3,o4,o5,o6,o7,o8]
+
+
+
+
+
+
+
+
+
+
+
