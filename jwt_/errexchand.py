@@ -24,7 +24,6 @@ def for_list(a,b,c,d):
     elif b=='professional_education':
         m=a.professional_education
     for i in m:
-        print(':::::::::::',i,type(i))
         end_knowledge1=db.session.query(c).filter_by(id=i).first()
         q1=end_knowledge1.employes+[a.id]
         end_knowledge1.employes=q1
