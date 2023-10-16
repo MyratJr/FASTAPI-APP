@@ -1,10 +1,22 @@
 from fastapi import APIRouter,Request
-from jwt_.errexchand import exchand,return_,ugrat,ber,select_need_column,get_all_data
+from jwt_.errexchand import exchand,return_,ugrat,ber,select_need_column,get_all_data,get_list_rows
 from models import *
 from schemas import input_employe
 from fastapi_sqlalchemy import db
 
 shared_router = APIRouter()
+
+@shared_router.get("/add_employe")
+def add_employe_get():
+    o1 = get_all_data(a4)
+    o2 = get_all_data(a2)
+    o3 = get_all_data(a7)
+    o4 = get_all_data(a8)
+    o5 = get_all_data(a3)
+    o6 = select_need_column(db.session.query(a1).all())
+    o7 = select_need_column(db.session.query(a5).all())
+    o8 = select_need_column(db.session.query(a6).all())
+    return [o1,o2,o3,o4,o5,o6,o7,o8]
 
 @shared_router.post("/add_employe")
 def add_employe(employe_schema:input_employe):
@@ -39,25 +51,11 @@ def add_employe(employe_schema:input_employe):
             "vocational_training":b,
             "professional_education":c}
 
-@shared_router.get("/add_employe")
-def add_employe_get():
-    o1 = get_all_data(a4)
-    o2 = get_all_data(a2)
-    o3 = get_all_data(a7)
-    o4 = get_all_data(a8)
-    o5 = get_all_data(a3)
-    o6 = select_need_column(db.session.query(a1).all())
-    o7 = select_need_column(db.session.query(a5).all())
-    o8 = select_need_column(db.session.query(a6).all())
-    return [o1,o2,o3,o4,o5,o6,o7,o8]
 
 @shared_router.get("/get_employes")
 def get_employes():
     all_employes=db.session.query(a9).all()
-    for employe in all_employes:
-        temporary_knowledge=[]
-        for each_end_knowlege in db.session.query(a1).all():
-            if f'{employe.id}' in each_end_knowlege.employes:
-                temporary_knowledge.append(each_end_knowlege.knowledge_part)
-        employe.end_knowledge=temporary_knowledge
+    get_list_rows(all_employes)
     return all_employes
+
+# @shared_router.

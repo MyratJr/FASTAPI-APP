@@ -3,6 +3,7 @@ from fastapi_sqlalchemy import db
 from fastapi import HTTPException
 import main
 from email_validator import validate_email
+from models import a1,a5,a6
 
 def exchand(status_c, detail_c):
     raise HTTPException(status_c ,detail_c)
@@ -60,3 +61,21 @@ def select_need_column(table_name):
 
 def get_all_data(table):
     return db.session.query(table).all()
+
+def get_list_rows(all_employes):
+    for employe in all_employes:
+        temporary_knowledge=[]
+        for each_end_knowlege in db.session.query(a1).all():
+            if f'{employe.id}' in each_end_knowlege.employes:
+                temporary_knowledge.append(each_end_knowlege.knowledge_part)
+        employe.end_knowledge=temporary_knowledge
+        temporary_vocational_training=[]
+        for each_vocational_training in db.session.query(a5).all():
+            if f'{employe.id}' in each_vocational_training.employes:
+                temporary_vocational_training.append(each_vocational_training.vocational_training)
+        employe.vocational_training=temporary_vocational_training
+        temporary_professional_education=[]
+        for each_professional_education in db.session.query(a6).all():
+            if f'{employe.id}' in each_professional_education.employes:
+                temporary_professional_education.append(each_professional_education.professional_education)
+        employe.professional_education=temporary_professional_education
