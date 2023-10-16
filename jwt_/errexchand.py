@@ -82,4 +82,3 @@ def salam(employe):
 def get_list_rows(all_employes):
     for employe in all_employes:
         salam(employe)
-        

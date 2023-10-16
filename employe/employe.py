@@ -61,5 +61,7 @@ def get_employes():
 @shared_router.get('/get_employe/{id}')
 def get_employe(id:int):
     employe=db.session.get(a9,id)
+    if employe is None:
+        exchand(404,'Employe not found')
     salam(employe)
     return employe
