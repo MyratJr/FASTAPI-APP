@@ -65,3 +65,4 @@ def get_employe(id:int):
         exchand(404,'Employe not found')
     salam(employe)
     return employe
+
