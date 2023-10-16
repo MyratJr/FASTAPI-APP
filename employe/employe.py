@@ -1,5 +1,5 @@
 from fastapi import APIRouter,Request
-from jwt_.errexchand import exchand,return_,ugrat,ber,select_need_column,get_all_data,get_list_rows
+from jwt_.errexchand import exchand,return_,ugrat,ber,select_need_column,get_all_data,get_list_rows,salam
 from models import *
 from schemas import input_employe
 from fastapi_sqlalchemy import db
@@ -58,4 +58,8 @@ def get_employes():
     get_list_rows(all_employes)
     return all_employes
 
-# @shared_router.
+@shared_router.get('/get_employe/{id}')
+def get_employe(id:int):
+    employe=db.session.get(a9,id)
+    salam(employe)
+    return employe
