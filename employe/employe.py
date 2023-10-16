@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Request
 from jwt_.errexchand import exchand,return_,ugrat,ber,select_need_column,get_all_data,get_list_rows,salam
 from models import *
-from schemas import input_employe
+from schemas import input_employe,update_employe
 from fastapi_sqlalchemy import db
 
 shared_router = APIRouter()
@@ -65,3 +65,32 @@ def get_employe(id:int):
         exchand(404,'Employe not found')
     salam(employe)
     return employe
+
+@shared_router.put("/update_employe/{id}")
+def update_employe(id:int,update_form:update_employe):
+    employe=db.session.get(a9,id)
+    if employe is None:
+        exchand(404,'Employe not found')
+    employe.name_surname=update_form.name_surname
+    employe.nation=update_form.nation
+    employe.age=update_form.age
+    employe.sex=update_form.sex
+    employe.new_degree=update_form.new_degree
+    employe.knowledge=update_form.knowledge
+    for j in db.session.query(a1).all():
+        if f'{employe.id}' in j.employes and j.id not in update_form.end_knowledge:
+            j.employes.remove(f'{employe.id}')
+        elif f'{employe.id}' not in j.employes and j.id in update_form.end_knowledge:
+            j.employes.append(f'{employe.id}')
+    for j in db.session.query(a5).all():
+        if f'{employe.id}' in j.employes and j.id not in update_form.vocational_training:
+            j.employes.remove(f'{employe.id}')
+        elif f'{employe.id}' not in j.employes and j.id in update_form.vocational_training:
+            j.employes.append(f'{employe.id}')
+    for j in db.session.query(a6).all():
+        if f'{employe.id}' in j.employes and j.id not in update_form.professional_education:
+            j.employes.remove(f'{employe.id}')
+        elif f'{employe.id}' not in j.employes and j.id in update_form.professional_education:
+            j.employes.append(f'{employe.id}')
+    db.session.commit()
+    return {"detail":f'{update_form.id} successfully updated!!!'}
