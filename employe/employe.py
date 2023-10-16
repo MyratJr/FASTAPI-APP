@@ -53,7 +53,11 @@ def add_employe_get():
 
 @shared_router.get("/get_employes")
 def get_employes():
-    all_employe=db.session.query(a9).all()
-    for employe in all_employe:
-        employe.end_knowledge = [1,2]
-    return all_employe
+    all_employes=db.session.query(a9).all()
+    for employe in all_employes:
+        temporary_knowledge=[]
+        for each_end_knowlege in db.session.query(a1).all():
+            if f'{employe.id}' in each_end_knowlege.employes:
+                temporary_knowledge.append(each_end_knowlege.knowledge_part)
+        employe.end_knowledge=temporary_knowledge
+    return all_employes
