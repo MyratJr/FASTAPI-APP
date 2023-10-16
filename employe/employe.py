@@ -54,4 +54,6 @@ def add_employe_get():
 @shared_router.get("/get_employes")
 def get_employes():
     all_employe=db.session.query(a9).all()
+    for employe in all_employe:
+        employe.end_knowledge = [1,2]
     return all_employe
