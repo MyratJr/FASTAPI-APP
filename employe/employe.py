@@ -80,17 +80,22 @@ def update_employe(id:int,update_form:update_employe):
     for j in db.session.query(a1).all():
         if f'{employe.id}' in j.employes and j.id not in update_form.end_knowledge:
             j.employes.remove(f'{employe.id}')
+            db.session.commit()
         elif f'{employe.id}' not in j.employes and j.id in update_form.end_knowledge:
             j.employes.append(f'{employe.id}')
+            print(j.employes)
+            db.session.commit()
     for j in db.session.query(a5).all():
         if f'{employe.id}' in j.employes and j.id not in update_form.vocational_training:
             j.employes.remove(f'{employe.id}')
         elif f'{employe.id}' not in j.employes and j.id in update_form.vocational_training:
             j.employes.append(f'{employe.id}')
+        db.session.commit()
     for j in db.session.query(a6).all():
         if f'{employe.id}' in j.employes and j.id not in update_form.professional_education:
             j.employes.remove(f'{employe.id}')
         elif f'{employe.id}' not in j.employes and j.id in update_form.professional_education:
             j.employes.append(f'{employe.id}')
+        db.session.commit()
     db.session.commit()
     return {"detail":f'{update_form.id} successfully updated!!!'}
