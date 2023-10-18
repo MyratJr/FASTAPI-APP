@@ -16,11 +16,6 @@ class user(Base):
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
 
-class a1(Base):
-    __tablename__='employe_end_knowledge'
-    id = Column(Integer, primary_key=True)
-    knowledge_part=Column(String,nullable=False)
-    employes=Column(ARRAY(String),nullable=True)
 
 class a2(Base):
     __tablename__='employe_age_between'
@@ -59,6 +54,13 @@ class a8(Base):
     id = Column(Integer, primary_key=True)
     degree=Column(String,nullable=False)
 
+class a1(Base):
+    __tablename__='employe_end_knowledge'
+    id = Column(Integer, primary_key=True)
+    knowledge_part=Column(String,nullable=False)
+    employes=Column(ARRAY(String),nullable=True)
+    employe_id=relationship("a9",back_populates="end_knowledge")
+
 class a9(Base):
     __tablename__='employe'
     id = Column(Integer, primary_key=True)
@@ -68,3 +70,11 @@ class a9(Base):
     sex=Column(ForeignKey("employe_sex.id"), nullable=False)
     new_degree=Column(ForeignKey("employe_new_degree.id"), nullable=False)
     knowledge=Column(ForeignKey("employe_knowledge.id"), nullable=False)
+    rer=Column(Integer, ForeignKey("employe_end_knowledge.id"))
+    end_knowledge=relationship("a1",back_populates="employe_id")
+
+# class a10(Base):
+#     __tablename__='ManyToManyEmployeEnd_knowledge'
+#     id=Column(Integer, primary_key=True)
+#     employe_id=Column(Integer)
+#     end_knowledge=Column(Integer)

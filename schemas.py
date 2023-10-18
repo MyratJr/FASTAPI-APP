@@ -62,3 +62,7 @@ class update_employe(input_employe):
     end_knowledge:List[int]
     vocational_training:List[int]
     professional_education:List[int]
+
+class salammyrat(BaseModel):
+    employe_id:int
+    end_knowledge_id:int
