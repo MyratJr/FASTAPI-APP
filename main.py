@@ -9,7 +9,9 @@ from fastapi_swagger2 import FastAPISwagger2
 from employe.employe import shared_router
 
 app = FastAPI()
+
 FastAPISwagger2(app)
+
 def redis_connection():
     return redis.Redis()
 
