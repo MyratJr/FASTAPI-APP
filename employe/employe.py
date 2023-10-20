@@ -52,7 +52,6 @@ def add_employe(employe_schema:input_employe):
 def get_employes():
     all_employes=db.session.query(a9).all()
     get_list_rows(all_employes)
-    # addTolist_2(a1,a5,a6,a,b,c)
     return all_employes
 
 @shared_router.get('/get_employe/{id}')
@@ -61,3 +60,19 @@ def get_employe(id:int):
     if employe is None:
         exchand(404,'Employe not found')
     return employe
+
+@shared_router.put('/update_employe/{id}')
+def update_employe(upgrade_employe_schema:input_employe):
+    check_user=db.session.query(a9).filter_by(id=upgrade_employe_schema.id).first()
+    if check_user is None:
+        exchand(400,"Employe not exists")
+    for attr,value in upgrade_employe_schema:
+        setattr(check_user,attr,value)
+    for i in db.session.query(a10).filter_by(employe_id=upgrade_employe_schema.id):
+        if i.end_knowledge not in upgrade_employe_schema.end_knowledge:
+            db.session.delete(i)
+    db.session.commit()
+    return upgrade_employe_schema
+
+
+
