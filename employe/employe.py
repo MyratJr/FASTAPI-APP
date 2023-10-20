@@ -1,21 +1,9 @@
-from fastapi import APIRouter,Request
-from jwt_.errexchand import exchand,return_,ugrat,ber,select_need_column,get_all_data,get_list_rows,salam
+from fastapi import APIRouter
+from jwt_.errexchand import exchand,return_,get_all_data,setMtM,addTolist
 from models import *
-from schemas import input_employe,salammyrat
+from schemas import input_employe
 from fastapi_sqlalchemy import db
-    # for j in db.session.query(a5).all():
-    #     if f'{employe.id}' in j.employes and j.id not in update_form.vocational_training:
-    #         j.employes.remove(f'{employe.id}')
-    #     elif f'{employe.id}' not in j.employes and j.id in update_form.vocational_training:
-    #         j.employes.append(f'{employe.id}')
-    #     db.session.commit()
-    # for j in db.session.query(a6).all():
-    #     if f'{employe.id}' in j.employes and j.id not in update_form.professional_education:
-    #         j.employes.remove(f'{employe.id}')
-    #     elif f'{employe.id}' not in j.employes and j.id in update_form.professional_education:
-    #         j.employes.append(f'{employe.id}')
-    #         db.session.commit()
-    # db.session.commit()
+
 shared_router = APIRouter()
 
 @shared_router.get("/add_employe")
@@ -25,9 +13,9 @@ def add_employe_get():
     o3 = get_all_data(a7)
     o4 = get_all_data(a8)
     o5 = get_all_data(a3)
-    o6 = select_need_column(db.session.query(a1).all())
-    o7 = select_need_column(db.session.query(a5).all())
-    o8 = select_need_column(db.session.query(a6).all())
+    o6 = get_all_data(a1)
+    o7 = get_all_data(a5)
+    o8 = get_all_data(a6)
     return [o1,o2,o3,o4,o5,o6,o7,o8]
 
 @shared_router.post("/add_employe")
@@ -44,14 +32,11 @@ def add_employe(employe_schema:input_employe):
                     knowledge=employe_schema.knowledge)
     db.session.add(new_employe)
     db.session.commit()
+    setMtM(a10,employe_schema.end_knowledge,employe_schema.id)
+    setMtM(a11,employe_schema.vocational_training,employe_schema.id)
+    setMtM(a12,employe_schema.professional_education,employe_schema.id)
     a=[];b=[];c=[]
-    ber(employe_schema,
-        'end_knowledge',a1,a,
-        'vocational_training',a5,b,
-        'professional_education',a6,c)
-    ugrat(a,a1,"knowledge_part",
-            b,a5,"vocational_training",
-            c,a6,"professional_education")
+    addTolist(a1,a5,a6,employe_schema,a,b,c)
     return {"id":employe_schema.id,
             "name_surname":employe_schema.name_surname,
             "natio":return_(a4,employe_schema.nation).nation,
@@ -75,28 +60,4 @@ def get_employe(id:int):
     employe=db.session.get(a9,id)
     if employe is None:
         exchand(404,'Employe not found')
-    salam(employe)
     return employe
-
-# @shared_router.put("/update_employe/{id}")
-# def update_employe(id:int,update_form:update_employe):
-#     employe=db.session.get(a9,id)
-#     if employe is None:
-#         exchand(404,'Employe not found')
-#     employe.name_surname=update_form.name_surname
-#     employe.nation=update_form.nation
-#     employe.age=update_form.age
-#     employe.sex=update_form.sex
-#     employe.new_degree=update_form.new_degree
-#     employe.knowledge=update_form.knowledge
-#     for j in db.session.query(a1).all():
-#         if f'{employe.id}' in j.employes and j.id not in update_form.end_knowledge:
-#             j.employes.remove(f'{employe.id}')
-#             j.employes=j.employes
-#             print(j.employes)
-#         elif f'{employe.id}' not in j.employes and j.id in update_form.end_knowledge:
-#             j.employes.append(f'{employe.id}')
-#             j.employes=j.employes
-#             print(j.employes)
-#         db.session.commit()
-#     return {"detail":f'{update_form.id} successfully updated!!!'}

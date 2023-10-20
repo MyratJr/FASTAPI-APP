@@ -36,13 +36,11 @@ class a5(Base):
     __tablename__='employe_vocational_training'
     id = Column(Integer, primary_key=True)
     vocational_training=Column(String,nullable=False)
-    employes=Column(ARRAY(String),nullable=True)
 
 class a6(Base):
     __tablename__='employe_professional_education'
     id = Column(Integer, primary_key=True)
     professional_education=Column(String,nullable=False)
-    employes=Column(ARRAY(String),nullable=True)
 
 class a7(Base):
     __tablename__='employe_sex'
@@ -58,8 +56,6 @@ class a1(Base):
     __tablename__='employe_end_knowledge'
     id = Column(Integer, primary_key=True)
     knowledge_part=Column(String,nullable=False)
-    employes=Column(ARRAY(String),nullable=True)
-    employe_id=relationship("a9",back_populates="end_knowledge")
 
 class a9(Base):
     __tablename__='employe'
@@ -70,11 +66,21 @@ class a9(Base):
     sex=Column(ForeignKey("employe_sex.id"), nullable=False)
     new_degree=Column(ForeignKey("employe_new_degree.id"), nullable=False)
     knowledge=Column(ForeignKey("employe_knowledge.id"), nullable=False)
-    rer=Column(Integer, ForeignKey("employe_end_knowledge.id"))
-    end_knowledge=relationship("a1",back_populates="employe_id")
 
-# class a10(Base):
-#     __tablename__='ManyToManyEmployeEnd_knowledge'
-#     id=Column(Integer, primary_key=True)
-#     employe_id=Column(Integer)
-#     end_knowledge=Column(Integer)
+class a10(Base):
+    __tablename__='ManyToManyEmployeEnd_knowledge'
+    id=Column(Integer, primary_key=True)
+    employe_id=Column(Integer)
+    end_knowledge=Column(Integer)
+
+class a11(Base):
+    __tablename__='ManyToManyEmploye_vocational_training'
+    id=Column(Integer, primary_key=True)
+    employe_id=Column(Integer)
+    vocational_training=Column(Integer)
+
+class a12(Base):
+    __tablename__='ManyToManyEmploye_professional_education'
+    id=Column(Integer, primary_key=True)
+    employe_id=Column(Integer)
+    professional_education=Column(Integer)
