@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from jwt_.errexchand import exchand,return_,get_all_data,setMtM,addTolist
+from jwt_.errexchand import *
 from models import *
 from schemas import input_employe
 from fastapi_sqlalchemy import db
@@ -48,11 +48,11 @@ def add_employe(employe_schema:input_employe):
             "vocational_training":b,
             "professional_education":c}
 
-
 @shared_router.get("/get_employes")
 def get_employes():
     all_employes=db.session.query(a9).all()
     get_list_rows(all_employes)
+    # addTolist_2(a1,a5,a6,a,b,c)
     return all_employes
 
 @shared_router.get('/get_employe/{id}')
