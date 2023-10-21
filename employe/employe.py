@@ -71,8 +71,10 @@ def update_employe(upgrade_employe_schema:input_employe):
     for i in db.session.query(a10).filter_by(employe_id=upgrade_employe_schema.id):
         if i.end_knowledge not in upgrade_employe_schema.end_knowledge:
             db.session.delete(i)
+    for i in upgrade_employe_schema.end_knowledge:
+        if db.session.query(a10).filter_by(employe_id=upgrade_employe_schema.id,end_knowledge=i).first() is None:
+            if db.session.query(a1).filter_by(id=i).first() is not None:
+                new_end_knowledge=a10(employe_id=upgrade_employe_schema.id,end_knowledge=i)
+                db.session.add(new_end_knowledge)
     db.session.commit()
     return upgrade_employe_schema
-
-
-
