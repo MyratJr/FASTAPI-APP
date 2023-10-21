@@ -76,5 +76,8 @@ def update_employe(upgrade_employe_schema:input_employe):
             if db.session.query(a1).filter_by(id=i).first() is not None:
                 new_end_knowledge=a10(employe_id=upgrade_employe_schema.id,end_knowledge=i)
                 db.session.add(new_end_knowledge)
+            else:
+                upgrade_employe_schema.end_knowledge=upgrade_employe_schema.end_knowledge[:]
+                upgrade_employe_schema.end_knowledge.remove(i)
     db.session.commit()
     return upgrade_employe_schema
