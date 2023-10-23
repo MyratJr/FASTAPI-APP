@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from jwt_.errexchand import *
 from models import *
-from schemas import input_employe
+from schemas import input_employe,input_employe_for_id
 from fastapi_sqlalchemy import db
 
 shared_router = APIRouter()
@@ -19,7 +19,7 @@ def add_employe_get():
     return [o1,o2,o3,o4,o5,o6,o7,o8]
 
 @shared_router.post("/add_employe")
-def add_employe(employe_schema:input_employe):
+def add_employe(employe_schema:input_employe_for_id):
     check_user=db.session.query(a9).filter_by(id=employe_schema.id).first()
     if check_user is not None:
         exchand(400,"Employe already exists")
@@ -62,17 +62,20 @@ def get_employe(id:int):
     return employe
 
 @shared_router.put('/update_employe/{id}')
-def update_employe(upgrade_employe_schema:input_employe):
-    check_user=db.session.query(a9).filter_by(id=upgrade_employe_schema.id).first()
+def update_employe(upgrade_employe_schema:input_employe,id:int):
+    check_user=db.session.query(a9).filter_by(id=id).first()
     if check_user is None:
         exchand(400,"Employe not exists")
     for attr,value in upgrade_employe_schema:
         setattr(check_user,attr,value)
-    delete_ManyToManyRows(a10,upgrade_employe_schema.id,upgrade_employe_schema.end_knowledge,'end_knowledge')
-    update_ManyToManyTables(upgrade_employe_schema.end_knowledge,a10,upgrade_employe_schema.id,'end_knowledge')
-    delete_ManyToManyRows(a11,upgrade_employe_schema.id,upgrade_employe_schema.vocational_training,'vocational_training')
-    update_ManyToManyTables(upgrade_employe_schema.vocational_training,a11,upgrade_employe_schema.id,'vocational_training')
-    delete_ManyToManyRows(a12,upgrade_employe_schema.id,upgrade_employe_schema.professional_education,'professional_education')
-    update_ManyToManyTables(upgrade_employe_schema.professional_education,a12,upgrade_employe_schema.id,'professional_education')
+    delete_ManyToManyRows(a10,id,upgrade_employe_schema.end_knowledge,'end_knowledge')
+    update_ManyToManyTables(upgrade_employe_schema.end_knowledge,a10,id,'end_knowledge',a1)
+    delete_ManyToManyRows(a11,id,upgrade_employe_schema.vocational_training,'vocational_training')
+    update_ManyToManyTables(upgrade_employe_schema.vocational_training,a11,id,'vocational_training',a5)
+    delete_ManyToManyRows(a12,id,upgrade_employe_schema.professional_education,'professional_education')
+    update_ManyToManyTables(upgrade_employe_schema.professional_education,a12,id,'professional_education',a6)
     db.session.commit()
     return upgrade_employe_schema
+
+@shared_router.delete('/delete_employe')
+def delete_employe():

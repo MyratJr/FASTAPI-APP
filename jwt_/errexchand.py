@@ -85,27 +85,31 @@ def delete_ManyToManyRows(a,b,c,d):
         if d=='professional_education':
             if i.professional_education not in c: db.session.delete(i)
 
-def miniupdate(i,b,c,d,a):
-    if db.session.query(a1).filter_by(id=i).first() is not None:
+def miniupdate(i,b,c,d,a,e):
+    if db.session.query(e).filter_by(id=i).first() is not None:
         if d=='end_knowledge':
+            print('salamamamaammammamam')
             new_end_knowledge=b(employe_id=c,end_knowledge=i)
         elif d=='vocational_training':
             new_end_knowledge=b(employe_id=c,vocational_training=i)
+            print('salamamamaammammamam')
         elif d=='professional_education':
             new_end_knowledge=b(employe_id=c,professional_education=i)
+            print('salamamamaammammamam')
         db.session.add(new_end_knowledge)
     else:
         a=a[:]
         a.remove(i)
+        print('salam')
 
-def update_ManyToManyTables(a,b,c,d):
+def update_ManyToManyTables(a,b,c,d,e):
     for i in a:
         if d=='end_knowledge':
             if db.session.query(b).filter_by(employe_id=c,end_knowledge=i).first() is None:
-                miniupdate(i,b,c,d,a)
+                miniupdate(i,b,c,d,a,e)
         elif d=='vocational_training':
             if db.session.query(b).filter_by(employe_id=c,vocational_training=i).first() is None:
-                miniupdate(i,b,c,d,a)
+                miniupdate(i,b,c,d,a,e)
         elif d=='professional_education':
             if db.session.query(b).filter_by(employe_id=c,professional_education=i).first() is None:
-                miniupdate(i,b,c,d,a)
+                miniupdate(i,b,c,d,a,e)

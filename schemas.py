@@ -50,7 +50,6 @@ class otp_schema(BaseModel):
     OTP:int
 
 class input_employe(BaseModel):
-    id:int
     name_surname:str
     nation:int
     age:int
@@ -60,3 +59,6 @@ class input_employe(BaseModel):
     end_knowledge:List[int]
     vocational_training:List[int]
     professional_education:List[int]
+
+class input_employe_for_id(input_employe):
+    id:int
