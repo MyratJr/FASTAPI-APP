@@ -30,7 +30,7 @@ class employe_age_between_enum(Enum):
 class a2(Base):
     __tablename__='employe_age_between'
     id = Column(Integer, primary_key=True)
-    age_between=Column(ENUM(employe_age_between_enum),nullable=False)
+    # age_between=Column(ENUM(employe_age_between_enum),nullable=False)
 
 class a3(Base):
     __tablename__='employe_knowledge'
