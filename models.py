@@ -94,4 +94,3 @@ class a12(Base):
     id=Column(Integer, primary_key=True)
     employe_id=Column(Integer)
     professional_education=Column(Integer)
-    
