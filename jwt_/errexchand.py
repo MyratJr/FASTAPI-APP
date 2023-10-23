@@ -76,7 +76,31 @@ def get_list_rows(all_employes):
                 temporary_professional_education.append(db.session.query(a6).filter_by(id=each_professional_education.professional_education).first().professional_education)
         employe.professional_education=temporary_professional_education
     
-def update_ManyToManyTables(a,b,c,d):
+def delete_ManyToManyRows(a,b,c,d):
     for i in db.session.query(a).filter_by(employe_id=b):
-        if i.d not in c:
-            db.session.delete(i)
+        if d=='end_knowledge':
+            if i.end_knowledge not in c: db.session.delete(i)
+        if d=='vocational_training':
+            if i.vocational_training not in c: db.session.delete(i)
+        if d=='professional_education':
+            if i.professional_education not in c: db.session.delete(i)
+
+def miniupdate(i,b,c):
+    if db.session.query(a1).filter_by(id=i).first() is not None:
+        new_end_knowledge=b(employe_id=c,d=i)
+        db.session.add(new_end_knowledge)
+    else:
+        a=a[:]
+        a.remove(i)
+
+def update_ManyToManyTables(a,b,c,d):
+    for i in a:
+        if d=='end_knowledge':
+            if db.session.query(b).filter_by(employe_id=c,end_knowledge=i).first() is None:
+                miniupdate(i,b,c)
+        elif d=='vocational_training':
+            if db.session.query(b).filter_by(employe_id=c,vocational_training=i).first() is None:
+                miniupdate(i,b,c)
+        elif d=='professional_education':
+            if db.session.query(b).filter_by(employe_id=c,professional_education=i).first() is None:
+                miniupdate(i,b,c)

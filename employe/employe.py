@@ -68,39 +68,11 @@ def update_employe(upgrade_employe_schema:input_employe):
         exchand(400,"Employe not exists")
     for attr,value in upgrade_employe_schema:
         setattr(check_user,attr,value)
-    update_ManyToManyTables(a10,upgrade_employe_schema.id,upgrade_employe_schema.end_knowledge,'end_knowledge')
-    # for i in db.session.query(a10).filter_by(employe_id=upgrade_employe_schema.id):
-    #     if i.end_knowledge not in upgrade_employe_schema.end_knowledge:
-    #         db.session.delete(i)
-    for i in upgrade_employe_schema.end_knowledge:
-        if db.session.query(a10).filter_by(employe_id=upgrade_employe_schema.id,end_knowledge=i).first() is None:
-            if db.session.query(a1).filter_by(id=i).first() is not None:
-                new_end_knowledge=a10(employe_id=upgrade_employe_schema.id,end_knowledge=i)
-                db.session.add(new_end_knowledge)
-            else:
-                upgrade_employe_schema.end_knowledge=upgrade_employe_schema.end_knowledge[:]
-                upgrade_employe_schema.end_knowledge.remove(i)
-    for i in db.session.query(a11).filter_by(employe_id=upgrade_employe_schema.id):
-        if i.vocational_training not in upgrade_employe_schema.vocational_training:
-            db.session.delete(i)
-    for i in upgrade_employe_schema.vocational_training:
-        if db.session.query(a11).filter_by(employe_id=upgrade_employe_schema.id,vocational_training=i).first() is None:
-            if db.session.query(a5).filter_by(id=i).first() is not None:
-                new_vocational_training=a11(employe_id=upgrade_employe_schema.id,vocational_training=i)
-                db.session.add(new_vocational_training)
-            else:
-                upgrade_employe_schema.vocational_training=upgrade_employe_schema.vocational_training[:]
-                upgrade_employe_schema.vocational_training.remove(i)
-    for i in db.session.query(a12).filter_by(employe_id=upgrade_employe_schema.id):
-        if i.professional_education not in upgrade_employe_schema.professional_education:
-            db.session.delete(i)
-    for i in upgrade_employe_schema.professional_education:
-        if db.session.query(a12).filter_by(employe_id=upgrade_employe_schema.id,professional_education=i).first() is None:
-            if db.session.query(a6).filter_by(id=i).first() is not None:
-                new_professional_education=a12(employe_id=upgrade_employe_schema.id,professional_education=i)
-                db.session.add(new_professional_education)
-            else:
-                upgrade_employe_schema.professional_education=upgrade_employe_schema.professional_education[:]
-                upgrade_employe_schema.professional_education.remove(i)
+    delete_ManyToManyRows(a10,upgrade_employe_schema.id,upgrade_employe_schema.end_knowledge,'end_knowledge')
+    update_ManyToManyTables(upgrade_employe_schema.end_knowledge,a10,upgrade_employe_schema.id,'end_knowledge')
+    delete_ManyToManyRows(a11,upgrade_employe_schema.id,upgrade_employe_schema.vocational_training,'vocational_training')
+    update_ManyToManyTables(upgrade_employe_schema.vocational_training,a11,upgrade_employe_schema.id,'vocational_training')
+    delete_ManyToManyRows(a12,upgrade_employe_schema.id,upgrade_employe_schema.professional_education,'professional_education')
+    update_ManyToManyTables(upgrade_employe_schema.professional_education,a12,upgrade_employe_schema.id,'professional_education')
     db.session.commit()
     return upgrade_employe_schema
