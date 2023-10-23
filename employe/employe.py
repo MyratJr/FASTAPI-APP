@@ -89,3 +89,32 @@ def delete_employe(id:int):
     db.session.commit()
     return f'{employe.name_surname} deleted'
 
+@shared_router.get('/all_employe_age_between')
+def get_all_employe_age_between():
+    age_betweens=db.session.query(a2).all()
+    return age_betweens
+
+@shared_router.get('/all_employe_knowledge')
+def get_all_employe_knowledge():
+    employe_knowledges=db.session.query(a3).all()
+    return employe_knowledges
+
+@shared_router.get('/all_employe_nation')
+def get_all_employe_nation():
+    employe_nation=db.session.query(a4).all()
+    return employe_nation
+
+@shared_router.get('/all_employe_vocational_training')
+def get_all_employe_vocational_training():
+    employe_vocational_training=db.session.query(a5).all()
+    return employe_vocational_training
+
+@shared_router.get('/all_employe_professional_education')
+def get_all_employe_professional_education():
+    employe_professional_education=db.session.query(a6).all()
+    return employe_professional_education
+
+@shared_router.get('/all_employe_sex')
+def get_all_employe_sex():
+    employe_sex=db.session.query(a7).all()
+    return employe_sex
