@@ -123,3 +123,8 @@ def get_all_employe_sex():
 def get_all_employe_new_degree():
     employe_new_degree=db.session.query(a8).all()
     return employe_new_degree
+
+@shared_router.get('/all_employe_end_knowledge')
+def get_all_employe_end_knowledge():
+    employe_end_knowledge=db.session.query(a1).all()
+    return employe_end_knowledge
