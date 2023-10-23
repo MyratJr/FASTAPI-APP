@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey,ARRAY
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey
 from datetime import datetime
+from enum import Enum
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.dialects.postgresql import ENUM
 
 Base = declarative_base()
 
@@ -16,6 +17,9 @@ class user(Base):
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
 
+class SocialEnum(Enum):
+    twitter= 'Twitter'
+    facebook = 'Facebook'
 
 class a2(Base):
     __tablename__='employe_age_between'
