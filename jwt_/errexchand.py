@@ -75,3 +75,8 @@ def get_list_rows(all_employes):
             if employe.id==each_professional_education.employe_id:
                 temporary_professional_education.append(db.session.query(a6).filter_by(id=each_professional_education.professional_education).first().professional_education)
         employe.professional_education=temporary_professional_education
+    
+def update_ManyToManyTables(a,b,c,d):
+    for i in db.session.query(a).filter_by(employe_id=b):
+        if i.d not in c:
+            db.session.delete(i)
