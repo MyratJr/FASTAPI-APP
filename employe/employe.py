@@ -118,3 +118,8 @@ def get_all_employe_professional_education():
 def get_all_employe_sex():
     employe_sex=db.session.query(a7).all()
     return employe_sex
+
+@shared_router.get('/all_employe_new_degree')
+def get_all_employe_new_degree():
+    employe_new_degree=db.session.query(a8).all()
+    return employe_new_degree
