@@ -113,3 +113,7 @@ def update_ManyToManyTables(a,b,c,d,e):
         elif d=='professional_education':
             if db.session.query(b).filter_by(employe_id=c,professional_education=i).first() is None:
                 miniupdate(i,b,c,d,a,e)
+
+def delete_MtM(table,id):
+    for i in db.session.query(table).filter_by(employe_id=id).all():
+        db.session.delete(i)

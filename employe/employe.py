@@ -77,5 +77,15 @@ def update_employe(upgrade_employe_schema:input_employe,id:int):
     db.session.commit()
     return upgrade_employe_schema
 
-@shared_router.delete('/delete_employe')
-def delete_employe():
+@shared_router.delete('/delete_employe/{id}')
+def delete_employe(id:int):
+    employe = db.session.query(a9).filter_by(id=id).first()
+    if employe is None:
+        exchand(404,"Employe not found")
+    db.session.delete(employe)
+    delete_MtM(a10,id)
+    delete_MtM(a11,id)
+    delete_MtM(a12,id)
+    db.session.commit()
+    return f'{employe.name_surname} deleted'
+
