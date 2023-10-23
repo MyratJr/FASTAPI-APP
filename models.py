@@ -17,14 +17,20 @@ class user(Base):
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
 
-class SocialEnum(Enum):
-    twitter= 'Twitter'
-    facebook = 'Facebook'
+class employe_age_between_enum(Enum):
+    a='18 ýaşa çenli'
+    b='18-20 ýaş'
+    c='21-22 ýaş'
+    d='23-24 ýaş'
+    e='25-29 ýaş'
+    f='30-34 ýaş'
+    g='35-39 ýaş'
+    h='40-49 ýaş'
 
 class a2(Base):
     __tablename__='employe_age_between'
     id = Column(Integer, primary_key=True)
-    age_between=Column(String,nullable=False)
+    age_between=Column(ENUM(employe_age_between_enum),nullable=False)
 
 class a3(Base):
     __tablename__='employe_knowledge'
