@@ -17,6 +17,7 @@ class user(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
+
 # --------------------------------------------------------------------------------
 class employe_age_between_enum(enum.Enum):
     a='18 ýaşa çenli'
@@ -32,6 +33,7 @@ class a2(Base):
     __tablename__='employe_age_between'
     id = Column(Integer, primary_key=True)
     age_between=Column(ENUM(employe_age_between_enum))
+
 # --------------------------------------------------------------------------------
 class employe_knowledge_enum(enum.Enum):
     a="ýokary okuw mekdebinden soňky hünäri"
@@ -45,13 +47,25 @@ class a3(Base):
     __tablename__='employe_knowledge'
     id = Column(Integer, primary_key=True)
     knowledge=Column(ENUM(employe_knowledge_enum))
+
 # --------------------------------------------------------------------------------
+class employe_nation_enum(enum.Enum):
+    a="türkmen"
+    b="özbek"
+    c="rus"
+    d="buluj"
+    e="azerbaýjan"
+    f="gazak"
+    g="ermeni"
+    h="tatar"
+    i="beýleki milletler"
 
 class a4(Base):
     __tablename__='employe_nation'
     id = Column(Integer, primary_key=True)
-    nation=Column(String,nullable=False)
+    nation=Column(ENUM(employe_nation_enum))
 
+# --------------------------------------------------------------------------------
 class a5(Base):
     __tablename__='employe_vocational_training'
     id = Column(Integer, primary_key=True)
