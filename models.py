@@ -66,15 +66,6 @@ class a4(Base):
     nation=Column(ENUM(employe_nation_enum))
 
 # --------------------------------------------------------------------------------
-class a5(Base):
-    __tablename__='employe_vocational_training'
-    id = Column(Integer, primary_key=True)
-    vocational_training=Column(String,nullable=False)
-
-class a6(Base):
-    __tablename__='employe_professional_education'
-    id = Column(Integer, primary_key=True)
-    professional_education=Column(String,nullable=False)
 
 class a7(Base):
     __tablename__='employe_sex'
@@ -86,10 +77,23 @@ class a8(Base):
     id = Column(Integer, primary_key=True)
     degree=Column(String,nullable=False)
 
+# --------------------------------------------------------------------------------
+# MANYTOMANYRELATIONSHIP
+class a5(Base):
+    __tablename__='employe_vocational_training'
+    id = Column(Integer, primary_key=True)
+    vocational_training=Column(String,nullable=False)
+
+class a6(Base):
+    __tablename__='employe_professional_education'
+    id = Column(Integer, primary_key=True)
+    professional_education=Column(String,nullable=False)
+
 class a1(Base):
     __tablename__='employe_end_knowledge'
     id = Column(Integer, primary_key=True)
     knowledge_part=Column(String,nullable=False)
+# --------------------------------------------------------------------------------
 
 class a9(Base):
     __tablename__='employe'
