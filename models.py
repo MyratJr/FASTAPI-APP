@@ -17,21 +17,22 @@ class user(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
-
-# class employe_age_between_enum(enum.Enum):
-#     a='18 ýaşa çenli'
-#     b='18-20 ýaş'
-#     c='21-22 ýaş'
-#     d='23-24 ýaş'
-#     e='25-29 ýaş'
-#     f='30-34 ýaş'
-#     g='35-39 ýaş'
-#     h='40-49 ýaş'
+# --------------------------------------------------------------------------------
+class employe_age_between_enum(enum.Enum):
+    a='18 ýaşa çenli'
+    b='18-20 ýaş'
+    c='21-22 ýaş'
+    d='23-24 ýaş'
+    e='25-29 ýaş'
+    f='30-34 ýaş'
+    g='35-39 ýaş'
+    h='40-49 ýaş'
 
 class a2(Base):
     __tablename__='employe_age_between'
     id = Column(Integer, primary_key=True)
-    age_between=Column(String,default="salam")
+    age_between=Column(ENUM(employe_age_between_enum))
+# --------------------------------------------------------------------------------
 
 class a3(Base):
     __tablename__='employe_knowledge'
