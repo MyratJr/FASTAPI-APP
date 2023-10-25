@@ -33,11 +33,19 @@ class a2(Base):
     id = Column(Integer, primary_key=True)
     age_between=Column(ENUM(employe_age_between_enum))
 # --------------------------------------------------------------------------------
+class employe_knowledge_enum(enum.Enum):
+    a="ýokary okuw mekdebinden soňky hünäri"
+    b="ýokary hünär"
+    c="orta hünär"
+    d="başlangyç hünär"
+    e="umumy orta"
+    f="esasy orta"
 
 class a3(Base):
     __tablename__='employe_knowledge'
     id = Column(Integer, primary_key=True)
-    knowledge=Column(String,nullable=False)
+    knowledge=Column(ENUM(employe_knowledge_enum))
+# --------------------------------------------------------------------------------
 
 class a4(Base):
     __tablename__='employe_nation'
