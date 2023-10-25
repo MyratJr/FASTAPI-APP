@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, ForeignKey
 from datetime import datetime
-from enum import Enum
+import enum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import ENUM
 import psycopg2
@@ -17,23 +17,21 @@ class user(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
-import sqlalchemy as sa
-from alembic import op
-class employe_age_between_enum(str,Enum):
-    a='18 ýaşa çenli'
-    b='18-20 ýaş'
-    c='21-22 ýaş'
-    d='23-24 ýaş'
-    e='25-29 ýaş'
-    f='30-34 ýaş'
-    g='35-39 ýaş'
-    h='40-49 ýaş'
+
+# class employe_age_between_enum(enum.Enum):
+#     a='18 ýaşa çenli'
+#     b='18-20 ýaş'
+#     c='21-22 ýaş'
+#     d='23-24 ýaş'
+#     e='25-29 ýaş'
+#     f='30-34 ýaş'
+#     g='35-39 ýaş'
+#     h='40-49 ýaş'
 
 class a2(Base):
     __tablename__='employe_age_between'
     id = Column(Integer, primary_key=True)
-    op.add_column('employe_age_between', sa.Column('age_between', psycopg2.ENUM('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', name='employe_age_between_enum'), nullable=False))
-
+    age_between=Column(String,default="salam")
 
 class a3(Base):
     __tablename__='employe_knowledge'
