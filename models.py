@@ -36,12 +36,6 @@ class employe_knowledge_enum(enum.Enum):
     d="başlangyç hünär"
     e="umumy orta"
     f="esasy orta"
-
-class a3(Base):
-    __tablename__='employe_knowledge'
-    id = Column(Integer, primary_key=True)
-    knowledge=Column(ENUM(employe_knowledge_enum))
-
 # --------------------------------------------------------------------------------
 class employe_nation_enum(enum.Enum):
     a="türkmen"
@@ -64,12 +58,6 @@ class employe_new_degree_enum(enum.Enum):
     b="Hünärmen"
     c="Beýleki gullukçylar"
     d="Işçiler"
-
-class a8(Base):
-    __tablename__='employe_new_degree'
-    id = Column(Integer, primary_key=True)
-    degree=Column(ENUM(employe_new_degree_enum))
-
 # --------------------------------------------------------------------------------
 # MANYTOMANYRELATIONSHIP
 class a5(Base):
@@ -95,8 +83,8 @@ class a9(Base):
     nation=Column(ENUM(employe_nation_enum))
     age=Column(ENUM(employe_age_between_enum))
     sex=Column(ENUM(employe_sex_enum))
-    new_degree=Column(ForeignKey("employe_new_degree.id"), nullable=False)
-    knowledge=Column(ForeignKey("employe_knowledge.id"), nullable=False)
+    new_degree=Column(ENUM(employe_new_degree_enum))
+    knowledge=Column(ENUM(employe_knowledge_enum))
 
 class a10(Base):
     __tablename__='ManyToManyEmployeEnd_knowledge'
