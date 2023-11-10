@@ -59,7 +59,6 @@ class employe_new_degree_enum(enum.Enum):
     c="Beýleki gullukçylar"
     d="Işçiler"
 # --------------------------------------------------------------------------------
-# MANYTOMANYRELATIONSHIP
 class a5(Base):
     __tablename__='employe_vocational_training'
     id = Column(Integer, primary_key=True)
@@ -75,7 +74,6 @@ class a1(Base):
     id = Column(Integer, primary_key=True)
     knowledge_part=Column(String,nullable=False)
 # --------------------------------------------------------------------------------
-
 class a9(Base):
     __tablename__='employe'
     id = Column(Integer, primary_key=True)
@@ -85,7 +83,8 @@ class a9(Base):
     sex=Column(ENUM(employe_sex_enum))
     new_degree=Column(ENUM(employe_new_degree_enum))
     knowledge=Column(ENUM(employe_knowledge_enum))
-
+# --------------------------------------------------------------------------------
+# MANYTOMANYRELATIONSHIP
 class a10(Base):
     __tablename__='ManyToManyEmployeEnd_knowledge'
     id=Column(Integer, primary_key=True)
@@ -103,3 +102,4 @@ class a12(Base):
     id=Column(Integer, primary_key=True)
     employe_id=Column(Integer)
     professional_education=Column(Integer)
+# --------------------------------------------------------------------------------
