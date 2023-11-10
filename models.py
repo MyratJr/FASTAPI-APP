@@ -66,16 +66,27 @@ class a4(Base):
     nation=Column(ENUM(employe_nation_enum))
 
 # --------------------------------------------------------------------------------
+class employe_sex_enum(enum.Enum):
+    a="erkek"
+    b="zenan"
+    c="başga"
 
 class a7(Base):
     __tablename__='employe_sex'
     id = Column(Integer, primary_key=True)
-    sex=Column(String,nullable=False)
+    sex=Column(ENUM(employe_sex_enum))
+
+# --------------------------------------------------------------------------------
+class employe_new_degree_enum(enum.Enum):
+    a="Ýolbaşçy"
+    b="Hünärmen"
+    c="Beýleki gullukçylar"
+    d="Işçiler"
 
 class a8(Base):
     __tablename__='employe_new_degree'
     id = Column(Integer, primary_key=True)
-    degree=Column(String,nullable=False)
+    degree=Column(ENUM(employe_new_degree_enum))
 
 # --------------------------------------------------------------------------------
 # MANYTOMANYRELATIONSHIP
