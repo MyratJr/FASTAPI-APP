@@ -28,12 +28,6 @@ class employe_age_between_enum(enum.Enum):
     f='30-34 ýaş'
     g='35-39 ýaş'
     h='40-49 ýaş'
-
-class a2(Base):
-    __tablename__='employe_age_between'
-    id = Column(Integer, primary_key=True)
-    age_between=Column(ENUM(employe_age_between_enum))
-
 # --------------------------------------------------------------------------------
 class employe_knowledge_enum(enum.Enum):
     a="ýokary okuw mekdebinden soňky hünäri"
@@ -59,23 +53,11 @@ class employe_nation_enum(enum.Enum):
     g="ermeni"
     h="tatar"
     i="beýleki milletler"
-
-class a4(Base):
-    __tablename__='employe_nation'
-    id = Column(Integer, primary_key=True)
-    nation=Column(ENUM(employe_nation_enum))
-
 # --------------------------------------------------------------------------------
 class employe_sex_enum(enum.Enum):
     a="erkek"
     b="zenan"
     c="başga"
-
-class a7(Base):
-    __tablename__='employe_sex'
-    id = Column(Integer, primary_key=True)
-    sex=Column(ENUM(employe_sex_enum))
-
 # --------------------------------------------------------------------------------
 class employe_new_degree_enum(enum.Enum):
     a="Ýolbaşçy"
@@ -110,9 +92,9 @@ class a9(Base):
     __tablename__='employe'
     id = Column(Integer, primary_key=True)
     name_surname=Column(String,nullable=False)
-    nation=Column(ForeignKey("employe_nation.id"), nullable=False)
-    age=Column(ForeignKey("employe_age_between.id"), nullable=False)
-    sex=Column(ForeignKey("employe_sex.id"), nullable=False)
+    nation=Column(ENUM(employe_nation_enum))
+    age=Column(ENUM(employe_age_between_enum))
+    sex=Column(ENUM(employe_sex_enum))
     new_degree=Column(ForeignKey("employe_new_degree.id"), nullable=False)
     knowledge=Column(ForeignKey("employe_knowledge.id"), nullable=False)
 
